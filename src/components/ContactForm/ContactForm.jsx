@@ -1,10 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
 import { Title, FormInput, AddButton, ErrorMsg } from './ContactForm.styled';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import toast from 'react-hot-toast';
+import { addContact } from 'redux/operations';
+import { selectContacts } from 'redux/selectors';
 
 const schema = yup
   .object({
@@ -30,7 +31,7 @@ const schema = yup
 
 export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts.contactsList);
+  const contacts = useSelector(selectContacts);
 
   const {
     register,

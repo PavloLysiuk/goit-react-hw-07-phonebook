@@ -1,45 +1,58 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
-import prevContacts from '../data/prevContacts';
-import toast from 'react-hot-toast';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
+import { addContact, deleteContact, fetchContacts } from './operations';
 
+const initialState = {
+  items: [],
+  isLoading: false,
+  error: null,
+};
+
+const handlePending = state => {
+  state.isLoading = true;
+};
+const handleRejected = (state, { payload }) => {
+  state.isLoading = false;
+  state.error = payload;
+};
 const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: {
-    contactsList: prevContacts,
-  },
-  reducers: {
-    addContact: {
-      reducer(state, { payload }) {
-        state.contactsList.push(payload);
-      },
-      prepare(name, number) {
-        return {
-          payload: {
-            id: nanoid(),
-            name,
-            number,
-          },
-        };
-      },
-    },
-    deleteContact(state, { payload }) {
-      const deletedContact = state.contactsList.find(
-        contact => contact.id === payload
+  initialState,
+
+  extraReducers: builder => {
+    builder
+      .addCase(fetchContacts.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = null;
+        state.items = payload;
+      })
+      .addCase(addContact.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = null;
+        state.items.push(payload);
+      })
+      .addCase(deleteContact.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.error = null;
+        const index = state.items.findIndex(item => item.id === payload.id);
+        state.items.splice(index, 1);
+      })
+      .addMatcher(
+        isAnyOf(
+          fetchContacts.pending,
+          addContact.pending,
+          deleteContact.pending
+        ),
+        handlePending
+      )
+      .addMatcher(
+        isAnyOf(
+          fetchContacts.rejected,
+          addContact.rejected,
+          deleteContact.rejected
+        ),
+        handleRejected
       );
-      if (deletedContact) {
-        state.contactsList = state.contactsList.filter(
-          contact => contact.id !== payload
-        );
-        toast.success(`${deletedContact.name} is successfully deleted`, {
-          style: {
-            color: 'white',
-            background: '#ff8e31',
-          },
-        });
-      }
-    },
   },
 });
 
-export const { addContact, deleteContact } = contactsSlice.actions;
 export const contactsReducer = contactsSlice.reducer;

@@ -1,25 +1,32 @@
 export const formatContactNumber = contact => {
   let newContact;
-  if (contact.replace(/\D+/g, '').length === 12) {
-    newContact = contact
-      .replace(/\D+/g, '')
-      .replace(/^(\d{3})(\d{2})(\d{3})(\d{4}).*/, '+$1 $2 $3 $4');
-  } else if (contact.replace(/\D+/g, '').length === 11) {
-    newContact = contact
-      .replace(/\D+/g, '')
-      .replace(/^(\d{2})(\d{2})(\d{3})(\d{4}).*/, '+$1 $2 $3 $4');
-  } else if (contact.replace(/\D+/g, '').length === 10) {
-    newContact = contact
-      .replace(/\D+/g, '')
-      .replace(/^(\d{1})(\d{2})(\d{3})(\d{4}).*/, '$1 $2 $3 $4');
-  } else if (contact.replace(/\D+/g, '').length === 9) {
-    newContact = contact
-      .replace(/\D+/g, '')
-      .replace(/^(\d{2})(\d{3})(\d{4}).*/, '$1 $2 $3');
+
+  const digits = contact.replace(/\D+/g, '');
+
+  if (digits.length === 7) {
+    newContact = digits.replace(/^(\d{3})(\d{2})(\d{2})/, '$1 $2$3');
+  } else if (digits.length === 8) {
+    newContact = digits.replace(/^(\d)(\d{3})(\d{2})(\d{2})/, '$1 $2 $3$4');
+  } else if (digits.length === 9) {
+    newContact = digits.replace(/^(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2$3$4');
+  } else if (digits.length === 10) {
+    newContact = digits.replace(
+      /^(\d{3})(\d{3})(\d{2})(\d{2})/,
+      '($1) $2 $3$4'
+    );
+  } else if (digits.length === 11) {
+    newContact = digits.replace(
+      /^(\d)(\d{3})(\d{3})(\d{2})(\d{2})/,
+      '+$1 ($2) $3 $4$5'
+    );
+  } else if (digits.length === 12) {
+    newContact = digits.replace(
+      /^(\d{2})(\d{3})(\d{3})(\d{2})(\d{2})/,
+      '+$1 ($2) $3 $4$5'
+    );
   } else {
-    newContact = contact
-      .replace(/\D+/g, '-')
-      .replace(/^(\d{3})(\d{4}).*/, '$1 $2');
+    newContact = contact;
   }
+
   return newContact;
 };
