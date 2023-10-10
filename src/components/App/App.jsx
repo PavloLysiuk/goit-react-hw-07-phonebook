@@ -2,9 +2,24 @@ import { GlobalStyle } from 'GlobalStyles';
 import { Container } from './App.styled';
 import { ContactForm } from 'components/ContactForm/ContactForm';
 import { ContactList } from 'components/ContactList/ContactList';
-import { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+import { selectError } from 'redux/selectors';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
-export function App() {
+export const App = () => {
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+    if (error) {
+      toast.error('Something went wrong, please try again later', {
+        style: {
+          background: '#ffd500',
+        },
+      });
+    }
+  }, [error]);
+
   return (
     <Container>
       <ContactForm />
@@ -25,4 +40,4 @@ export function App() {
       />
     </Container>
   );
-}
+};

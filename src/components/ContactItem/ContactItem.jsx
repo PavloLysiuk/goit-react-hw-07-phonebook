@@ -4,6 +4,7 @@ import { deleteContact } from 'redux/operations';
 import { formatContactNumber } from 'utils/formatContactNumber';
 import { ListItem, Text, DeleteButton } from './Contactitem.styled';
 import { PiTrash } from 'react-icons/pi';
+import toast from 'react-hot-toast';
 
 export const ContactItem = ({ contact }) => {
   const [isDeleting, setIsDeleting] = useState(false);
@@ -19,6 +20,12 @@ export const ContactItem = ({ contact }) => {
         onClick={() => {
           dispatch(deleteContact(contact.id));
           setIsDeleting(true);
+          toast.success(`${contact.name} is successfully deleted`, {
+            style: {
+              color: 'white',
+              background: '#ff8e31',
+            },
+          });
         }}
         disabled={isDeleting}
       >

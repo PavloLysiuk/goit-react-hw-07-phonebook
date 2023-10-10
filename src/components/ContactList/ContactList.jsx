@@ -49,7 +49,7 @@ export const ContactList = () => {
           </ul>
         </>
       ) : (
-        <NoContacts>No contacts in phone book</NoContacts>
+        !isLoading && <NoContacts>No contacts in phone book</NoContacts>
       )}
     </>
   );

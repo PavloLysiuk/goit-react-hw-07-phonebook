@@ -1,5 +1,5 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
-import { addContact, deleteContact, fetchContacts } from './operations';
+import { fetchContacts, addContact, deleteContact } from './operations';
 
 const initialState = {
   items: [],
@@ -25,10 +25,10 @@ const contactsSlice = createSlice({
         state.error = null;
         state.items = payload;
       })
-      .addCase(addContact.fulfilled, (state, { payload }) => {
+      .addCase(addContact.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        state.items.push(payload);
+        state.items.push(action.payload);
       })
       .addCase(deleteContact.fulfilled, (state, { payload }) => {
         state.isLoading = false;
