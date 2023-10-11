@@ -1,25 +1,22 @@
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { deleteContact } from 'redux/operations';
-import { formatContactNumber } from 'utils/formatContactNumber';
+import { formatPhoneNumber } from 'utils/formatPhoneNumber';
 import { ListItem, Text, DeleteButton } from './Contactitem.styled';
 import { PiTrash } from 'react-icons/pi';
 import toast from 'react-hot-toast';
 
 export const ContactItem = ({ contact }) => {
-  const [isDeleting, setIsDeleting] = useState(false);
   const dispatch = useDispatch();
 
   return (
     <ListItem key={contact.id}>
       <Text>
-        {contact.name}: {formatContactNumber(contact.number)}
+        {contact.name}: {formatPhoneNumber(contact.phone)}
       </Text>
       <DeleteButton
         type="button"
         onClick={() => {
           dispatch(deleteContact(contact.id));
-          setIsDeleting(true);
           toast.success(`${contact.name} is successfully deleted`, {
             style: {
               color: 'white',
@@ -27,7 +24,6 @@ export const ContactItem = ({ contact }) => {
             },
           });
         }}
-        disabled={isDeleting}
       >
         <PiTrash />
       </DeleteButton>

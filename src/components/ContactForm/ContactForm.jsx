@@ -17,7 +17,7 @@ const schema = yup
         /^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$/,
         'Name is allowed to include only letters, apostrophes, dashes, and spaces'
       ),
-    number: yup
+    phone: yup
       .string()
       .min(7, 'Phone number should be a minimum of 7 characters')
       .max(17, 'Phone number must not exceed 17 characters in length.')
@@ -43,7 +43,7 @@ export const ContactForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = ({ name, number }) => {
+  const onSubmit = ({ name, phone }) => {
     if (
       contacts.find(
         contact => contact.name.toLowerCase() === name.toLowerCase()
@@ -63,7 +63,7 @@ export const ContactForm = () => {
         background: '#5cc400',
       },
     });
-    dispatch(addContact(name, number));
+    dispatch(addContact(name, phone));
     reset();
   };
 
@@ -80,10 +80,10 @@ export const ContactForm = () => {
 
         <FormInput
           type="tel"
-          {...register('number')}
+          {...register('phone')}
           placeholder="Phone number (Example: XXXXXXX)"
         />
-        {errors.number && <ErrorMsg>{errors.number.message}</ErrorMsg>}
+        {errors.phone && <ErrorMsg>{errors.phone.message}</ErrorMsg>}
 
         <AddButton type="submit">Add contact</AddButton>
       </form>

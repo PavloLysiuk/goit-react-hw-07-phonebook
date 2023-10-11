@@ -1,4 +1,4 @@
-export const formatContactNumber = contact => {
+export const formatPhoneNumber = contact => {
   let newContact;
 
   const digits = contact.replace(/\D+/g, '');
