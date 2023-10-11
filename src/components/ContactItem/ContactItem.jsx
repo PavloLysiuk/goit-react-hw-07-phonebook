@@ -11,7 +11,7 @@ export const ContactItem = ({ contact }) => {
   return (
     <ListItem key={contact.id}>
       <Text>
-        {contact.name}: {formatPhoneNumber(contact.phone)}
+        {contact.name}: {formatPhoneNumber(contact.number)}
       </Text>
       <DeleteButton
         type="button"
