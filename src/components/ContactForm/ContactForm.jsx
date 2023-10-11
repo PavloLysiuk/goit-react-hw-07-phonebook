@@ -1,11 +1,11 @@
 import { Title, FormInput, AddButton, ErrorMsg } from './ContactForm.styled';
-import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { addContact } from 'redux/operations';
 import { selectContacts } from 'redux/selectors';
+import { addContact } from 'redux/operations';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
+import * as yup from 'yup';
 
 const schema = yup
   .object({
@@ -46,7 +46,8 @@ export const ContactForm = () => {
   const onSubmit = ({ name, number }) => {
     if (
       contacts.find(
-        contact => contact.name.toLowerCase() === name.toLowerCase()
+        contact =>
+          contact.name.toLowerCase().trim() === name.toLowerCase().trim()
       )
     ) {
       toast.error(`${name} is already in contacts`, {
@@ -63,7 +64,7 @@ export const ContactForm = () => {
         background: '#5cc400',
       },
     });
-    dispatch(addContact(name, number));
+    dispatch(addContact({ name, number }));
     reset();
   };
 
